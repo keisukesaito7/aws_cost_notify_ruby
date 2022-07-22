@@ -1,0 +1,36 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ "main", "feature/add_deploy_workflows" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.7.6'
+        
+    - name: bundle install
+      run: |
+        gem install bundler
+        bundle config set deployment 'true'
+        bundle install
+        
+    - name: compress zip
+      run: |
+        zip costNotifierRuby lambda_function.rb -r vendor
+
+    - name: Deploy Lambda
+      env:
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: ${{ secrets.AWS_REGION }}
+      run: |
+        gem install aws-sdk-lambda
+        ruby ./deploy/deploy_lambda.rb
