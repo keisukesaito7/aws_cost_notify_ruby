@@ -1,6 +1,6 @@
 require "aws-sdk-lambda"
 
-client = Aws::Lambda::Client.new region: ENV["resion"],
+client = Aws::Lambda::Client.new region: ENV["region"],
                              access_key_id: ENV["access_key_id"],
                              secret_access_key: ENV["secret_access_key"]
 
