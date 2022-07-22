@@ -15,13 +15,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '2.7.6'
-        
-    - name: bundle install
-      run: |
-        gem install bundler
-        bundle config set deployment 'true'
-        bundle install
-        
+        bundler-cache: true
+
     - name: compress zip
       run: |
         zip costNotifierRuby lambda_function.rb -r vendor
