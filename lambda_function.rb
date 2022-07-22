@@ -40,7 +40,7 @@ def pretty_response(message)
     ===========================
     #{start_date} - #{end_date}
     ---------------------------
-    合計: #{sum} USD
+    sum: #{sum} USD
     #{cost_groups.join("\n")}
     ===========================
   EOS
