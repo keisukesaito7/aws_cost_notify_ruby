@@ -39,14 +39,14 @@ def pretty_response(message)
 
     sum += amount
 
-    "#{key}: #{round(amount)}円"
+    "#{key} : #{round(amount)}円"
   end
 
   <<~"EOS"
     ===========================
     #{start_date} - #{end_date}
     ---------------------------
-    sum: #{round(sum)}円
+    合計 : #{round(sum)}円
     #{cost_groups.join("\n")}
     ===========================
   EOS
