@@ -11,7 +11,6 @@ gem "slack-notifier"
 
 # http
 gem "net-http"
-gem "uri"
 
 # debug
 gem "pry"
