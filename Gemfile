@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # aws-sdk
-gem "aws-sdk-costexplorer"
-gem "rexml" # Unable to find a compatible xml library. Ensure that you have installed or added to your Gemfile one of ox, oga, libxml, nokogiri or rexml (RuntimeError)
+gem 'aws-sdk-costexplorer'
 
 # notifier
-gem "slack-notifier"
+gem 'slack-notifier'
 
 # http
-gem "net-http"
-gem "uri"
+gem 'net-http'
+gem 'uri', '= 0.10.0'
 
 # debug
-gem "pry"
+gem 'pry'
+
+# lint
+gem 'rubocop'

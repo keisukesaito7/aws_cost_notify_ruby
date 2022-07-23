@@ -2,8 +2,6 @@ name: Deploy Lambda
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -18,7 +16,11 @@ jobs:
         ruby-version: '2.7.6'
         bundler-cache: true
 
+    - name: Run Rubocop
+      run: bundle exec rubocop
+
     - name: compress zip
+      if: github.ref == 'refs/heads/main'
       run: |
         zip -r costNotifierRuby lambda_function.rb vendor
 
