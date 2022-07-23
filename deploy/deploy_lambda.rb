@@ -1,16 +1,14 @@
 require "aws-sdk-lambda"
 
-client = Aws::Lambda::Client.new region: ENV["REGION"],
-                             access_key_id: ENV["ACCESS_KEY_ID"],
-                             secret_access_key: ENV["SECRET_ACCESS_KEY"]
+client = Aws::Lambda::Client.new({
+  region: ENV["REGION"],
+  access_key_id: ENV["ACCESS_KEY_ID"],
+  secret_access_key: ENV["SECRET_ACCESS_KEY"]
+})
 
 zip_file = File.open "costNotifierRuby.zip", "r"
 
-revision_id = ENV["VERSION_ID"].slice(0, 6)
-
 client.update_function_code({
   function_name: "costNotifierRuby",
-  zip_file: zip_file,
-  revision_id: revision_id,
-  publish: true
+  zip_file: zip_file
 })
