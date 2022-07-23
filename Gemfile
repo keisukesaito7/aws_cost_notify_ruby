@@ -15,3 +15,6 @@ gem "uri"
 
 # debug
 gem "pry"
+
+# lint
+gem "rubocop"
