@@ -3,7 +3,6 @@ require 'aws-sdk-costexplorer'
 require 'net/http'
 require 'uri'
 require 'json'
-require 'pry'
 
 def lambda_handler(event:, context:)
   message = fetch_cost
