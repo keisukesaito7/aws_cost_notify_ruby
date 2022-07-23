@@ -5,4 +5,12 @@ client = Aws::Lambda::Client.new region: ENV["REGION"],
                              secret_access_key: ENV["SECRET_ACCESS_KEY"]
 
 zip_file = File.open "costNotifierRuby.zip", "r"
-client.update_function_code function_name: "costNotifierRuby", zip_file: zip_file, revision_id: ENV["VERSION_ID"]
+
+revision_id = ENV["VERSION_ID"].slice(0, 6)
+
+client.update_function_code({
+  function_name: "costNotifierRuby",
+  zip_file: zip_file,
+  revision_id: revision_id,
+  publish: true
+})

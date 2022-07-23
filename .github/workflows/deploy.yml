@@ -1,9 +1,10 @@
-name: Ruby
+name: Deploy Lambda
 
 on:
   push:
     branches:
       - main
+      - feature/fix-ci
 
 env:
   VERSION_ID: ${{ github.sha }}
@@ -23,7 +24,7 @@ jobs:
 
     - name: compress zip
       run: |
-        zip costNotifierRuby lambda_function.rb -r vendor
+        zip -r costNotifierRuby lambda_function.rb vendor
 
     - name: Deploy Lambda
       env:
