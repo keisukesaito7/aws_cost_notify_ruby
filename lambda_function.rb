@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'slack-notifier'
 require 'aws-sdk-costexplorer'
 require 'net/http'
@@ -11,16 +13,16 @@ def lambda_handler(event:, context:)
 end
 
 def fetch_cost
-  aws_client = Aws::CostExplorer::Client.new(region: "us-east-1")
+  aws_client = Aws::CostExplorer::Client.new(region: 'us-east-1')
 
   aws_client.get_cost_and_usage(
     time_period: {
       start: Date.new(Date.today.year, Date.today.month, 1).strftime('%F'),
-      end: Date.new(Date.today.year, Date.today.month, -1).strftime('%F'),
+      end: Date.new(Date.today.year, Date.today.month, -1).strftime('%F')
     },
     granularity: 'MONTHLY',
     metrics: ['AmortizedCost'],
-    group_by: [ { type: "DIMENSION",key: 'SERVICE' }]
+    group_by: [{ type: 'DIMENSION', key: 'SERVICE' }]
   )
 end
 
@@ -33,9 +35,9 @@ def pretty_response(message)
   cost_groups = message.dig(:results_by_time, 0, :groups).map do |group|
     key = group.dig(:keys, 0)
     amount = exchange_from_dollar_to_yen({
-      amount: group.dig(:metrics, "AmortizedCost", :amount).to_f,
-      rate: rate
-    })
+                                           amount: group.dig(:metrics, 'AmortizedCost', :amount).to_f,
+                                           rate: rate
+                                         })
 
     sum += amount
 
