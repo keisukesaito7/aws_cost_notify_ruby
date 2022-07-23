@@ -9,3 +9,7 @@ gem "slack-notifier"
 
 # debug
 gem "pry"
+
+# http
+gem "net-http"
+gem "uri"
