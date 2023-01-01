@@ -66,6 +66,6 @@ def round(amount)
 end
 
 def notify_slack(result)
-  notifier = Slack::Notifier.new ENV.fetch('SLACK_WEBHOOK_URL')
+  notifier = Slack::Notifier.new ENV['SLACK_WEBHOOK_URL']
   notifier.ping result
 end
