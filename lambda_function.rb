@@ -6,6 +6,8 @@ require 'net/http'
 require 'uri'
 require 'json'
 
+EXCHANGE_RATE_URL = "https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}"
+
 def lambda_handler(*)
   message = fetch_cost
   result = pretty_response(message)
@@ -27,11 +29,10 @@ def fetch_cost
 end
 
 def pretty_response(message)
+  sum, cost_groups = summerize_cost_groups(message.dig(:results_by_time, 0, :groups), exchange_rate)
+
   start_date = message.dig(:results_by_time, 0, :time_period, :start)
   end_date = message.dig(:results_by_time, 0, :time_period, :end)
-
-  rate = exchange_rate_from_dollar_to_yen
-  sum, cost_groups = summerize_cost_groups(message.dig(:results_by_time, 0, :groups), rate)
 
   <<~"RESPONSE"
     ===========================
@@ -43,8 +44,8 @@ def pretty_response(message)
   RESPONSE
 end
 
-def exchange_rate_from_dollar_to_yen
-  uri = URI.parse("https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}")
+def exchange_rate
+  uri = URI.parse(EXCHANGE_RATE_URL)
   res = Net::HTTP.get(uri)
   JSON.parse(res)['rates']['JPY']
 end
@@ -52,19 +53,12 @@ end
 def summerize_cost_groups(cost_groups, rate)
   sum = 0
   formatted_cost_groups = cost_groups.map do |group|
-    amount = exchange_from_dollar_to_yen({
-                                           amount: group.dig(:metrics, 'AmortizedCost', :amount).to_f,
-                                           rate: rate
-                                         })
-    sum += amount
+    amount = group.dig(:metrics, 'AmortizedCost', :amount).to_f
+    sum += amount * rate
     "#{group.dig(:keys, 0)} : #{round(amount)}円"
   end
 
   [sum, formatted_cost_groups]
-end
-
-def exchange_from_dollar_to_yen(amount:, rate:)
-  amount * rate
 end
 
 def round(amount)
@@ -72,6 +66,6 @@ def round(amount)
 end
 
 def notify_slack(result)
-  notifier = Slack::Notifier.new ENV.fetch('SLACK_WEBHOOK_URL')
+  notifier = Slack::Notifier.new ENV['SLACK_WEBHOOK_URL']
   notifier.ping result
 end
