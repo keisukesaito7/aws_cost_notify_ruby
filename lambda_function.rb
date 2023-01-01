@@ -52,19 +52,12 @@ end
 def summerize_cost_groups(cost_groups, rate)
   sum = 0
   formatted_cost_groups = cost_groups.map do |group|
-    amount = exchange_from_dollar_to_yen({
-                                           amount: group.dig(:metrics, 'AmortizedCost', :amount).to_f,
-                                           rate: rate
-                                         })
-    sum += amount
+    amount = group.dig(:metrics, 'AmortizedCost', :amount).to_f
+    sum += amount * rate
     "#{group.dig(:keys, 0)} : #{round(amount)}円"
   end
 
   [sum, formatted_cost_groups]
-end
-
-def exchange_from_dollar_to_yen(amount:, rate:)
-  amount * rate
 end
 
 def round(amount)
