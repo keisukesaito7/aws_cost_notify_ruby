@@ -53,8 +53,8 @@ end
 def summerize_cost_groups(cost_groups, rate)
   sum = 0
   formatted_cost_groups = cost_groups.map do |group|
-    amount = group.dig(:metrics, 'AmortizedCost', :amount).to_f
-    sum += amount * rate
+    amount = group.dig(:metrics, 'AmortizedCost', :amount).to_f * rate
+    sum += amount
     "#{group.dig(:keys, 0)} : #{round(amount)}円"
   end
 
