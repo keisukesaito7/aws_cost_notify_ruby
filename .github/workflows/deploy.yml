@@ -29,7 +29,8 @@ jobs:
     - name: compress zip
       if: github.ref == 'refs/heads/main'
       run: |
-        zip -r costNotifierRuby lambda_function.rb vendor
+        zip -r functions lambda_function.rb
+        zip -r layer vendor
 
     - name: Configure AWS Credentials
       if: github.ref == 'refs/heads/main'
