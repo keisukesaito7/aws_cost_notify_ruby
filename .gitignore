@@ -1,5 +1,6 @@
 /.bundle/
 /vendor/
 .env
+.envrc
 
 /infra.drawio

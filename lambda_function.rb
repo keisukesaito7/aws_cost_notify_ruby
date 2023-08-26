@@ -6,12 +6,19 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-EXCHANGE_RATE_URL = "https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}"
+EXCHANGE_RATE_URL = "https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}".freeze
 
 def lambda_handler(*)
+  puts 'ok, called lambda handler'
+
   message = fetch_cost
+  puts 'ok, fetched cost'
+
   result = pretty_response(message)
+  puts 'ok, formatted response'
+
   notify_slack(result)
+  puts 'ok, notify slack finished'
 end
 
 def fetch_cost
