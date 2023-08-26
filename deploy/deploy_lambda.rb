@@ -9,6 +9,6 @@ zip_file = File.open 'costNotifierRuby.zip', 'r'
 client.update_function_code(
   {
     function_name: 'costNotifierRuby',
-    zip_file: zip_file
+    zip_file:
   }
 )

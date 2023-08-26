@@ -6,7 +6,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-EXCHANGE_RATE_URL = "https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}"
+EXCHANGE_RATE_URL = "https://openexchangerates.org/api/latest.json?app_id=#{ENV['OPENEXCHANGERATES_API_ID']}".freeze
 
 def lambda_handler(*)
   puts 'ok, called lambda handler'
